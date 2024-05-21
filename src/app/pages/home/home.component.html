@@ -1,0 +1,46 @@
+<div class="site-page-header-ghost-wrapper" style="padding: 10px;">
+  <nz-page-header [nzGhost]="false">
+    <nz-page-header-title>List Of Computers</nz-page-header-title>
+
+    <nz-page-header-extra>
+      <input nz-input="text" [(ngModel)]="searchQuery" (input)="applyFilter()" placeholder="Search...">
+    </nz-page-header-extra>
+  </nz-page-header>
+</div>
+
+<div class="table-div">
+  <nz-table #basicTable [nzData]="jsonData" nzSize="small" [nzFrontPagination]="false" [nzShowPagination]="false" >
+  <thead>
+    <tr style="font-size: larger;">
+      <th style="width: 120px;">IP Address</th>
+      <th style="width: auto;">Computer Name</th>
+      <th style="width: 180px;">MAC Address</th>
+      <th style="width: auto;">Network Adapter Company</th>
+      <th style="width: 120px; text-align: center;">Status</th>
+      <th  style="width: 80px; text-align: center;">Power</th>
+      <th style="width: 120px; text-align: center;">Restart</th>
+    </tr>
+  </thead>
+  
+  <tbody>
+    <tr *ngFor="let item of jsonData ; let i = index">
+      <td style="width: 120px;">{{ item['IP Address'] }}</td>
+      <td style="width: auto;">{{ item['Computer Name'] || '-' }}</td>
+      <td style="width: 180px;">{{ item['MAC Address'] }}</td>
+      <td  style="width: auto;">{{ item['Network Adapter Company'] }}</td>
+      <td style="width: 80px; text-align: center;">{{ item['Status'] }}</td>
+      <td  style="width: 120px; text-align: center;">
+         <nz-switch  [ngModel]="item['Status'] === 'On'" (ngModelChange)="onChangeStatus($event, i)" ></nz-switch>           
+      </td> 
+    
+      <td style="width: 120px; text-align: center;">
+        <button nz-button nzType="primary" (click)="resetRow(i)" [disabled]="item['Status'] === 'Off'" 
+        [style.background-color]="item['Status'] === 'Off' ? 'grey' : 'green'">
+          <span nz-icon nzType="reload" nzTheme="outline"></span> 
+        </button>
+      </td>      
+      </tr>
+  </tbody> 
+</nz-table>
+</div>
+
